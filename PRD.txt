@@ -1,0 +1,186 @@
+# Product Requirement Document (PRD)  
+**Project:** Smart Code Reviewer Agent  
+**Prepared by:** Hamza  
+**Date:** 16 Jan 2026  
+
+---
+
+## 1. Project Overview
+
+**Objective:**  
+Build a Smart Code Reviewer Agent that analyzes code snippets and provides feedback similar to a senior software engineer. The agent should:  
+- Identify code issues  
+- Suggest improvements  
+- Assign an overall quality score (0–10)  
+- Focus on reasoning, judgment, and clear explanation rather than execution  
+
+**Scope:**  
+- Support for JavaScript, TypeScript, Python  
+- Integration with LLM (OpenAI GPT-4 / LangChain / LangGraph)  
+- Web interface built with Next.js (React)  
+- Backend API using FastAPI (Python)  
+
+---
+
+## 2. Features & Functional Requirements
+
+### 2.1 Code Input
+- Users can paste/write code in a textarea / code editor  
+- Language selection dropdown (JS / TS / Python)  
+- Submit button triggers the review process  
+
+### 2.2 LLM Code Analysis
+- Backend builds prompt for LLM  
+- LLM analyzes code:
+  - Readability  
+  - Structure  
+  - Logic  
+  - Edge cases  
+- Detects:
+  - Bugs  
+  - Anti-patterns  
+  - Potential issues  
+
+### 2.3 Suggestions
+- Provides practical suggestions:
+  - Refactoring  
+  - Best-practice improvements  
+- Optional code examples in suggestions  
+
+### 2.4 Scoring System
+- Assign 0–10 score with justification  
+- Score criteria:
+  - 0–3 → Risky / Poor code  
+  - 4–6 → Functional but improvable  
+  - 7–8 → Good quality  
+  - 9–10 → Excellent / Clean code  
+
+### 2.5 Output / UI
+- Display in structured format:
+  - Score  
+  - Issues (bulleted list)  
+  - Suggestions (bulleted list)  
+  - Reason / justification  
+- Optional enhancements:
+  - Syntax highlighting  
+  - Collapsible sections for Issues/Suggestions  
+  - Session history / previous reviews  
+  - Loading spinner during LLM response  
+
+---
+
+## 3. Non-Functional Requirements
+
+- Responsiveness: UI must work on desktop & mobile  
+- Performance: LLM response latency < 5 sec per code snippet  
+- Security:  
+  - No code execution on server  
+  - Only safe prompts sent to LLM  
+- Scalability: Backend should handle multiple simultaneous requests  
+- Maintainability:  
+  - Modular React components  
+  - Well-documented backend code  
+
+---
+
+## 4. Technical Architecture
+
+### 4.1 Frontend
+- Framework: Next.js (React)  
+- Components:
+  - LanguageSelect  
+  - CodeInput  
+  - ReviewOutput  
+- Features:
+  - Submit button triggers API call  
+  - Displays structured review output  
+  - Optional: syntax highlighting, dark mode, history  
+
+### 4.2 Backend
+- Framework: FastAPI (Python)  
+- Features:
+  - Accept POST request: `{code, language}`  
+  - Build structured prompt for LLM  
+  - Send request to LLM  
+  - Return JSON response to frontend  
+
+### 4.3 LLM Integration
+- Model: GPT-4 / OpenAI / LangChain  
+- Functionality:
+  - Code reasoning & review  
+  - Structured output: `{score, issues, suggestions, reason}`  
+- Controlled via prompt engineering, no model training required  
+
+---
+
+## 5. Data / Memory Management
+
+- Session Memory: optional  
+  - Store previous reviews in frontend state / localStorage  
+  - Helps track progress for same code snippet  
+- Scoring Rules: stored in backend config  
+- No persistent model training required  
+
+---
+
+## 6. Deliverables
+
+1. GitHub Repository
+   - Frontend (Next.js)  
+   - Backend (FastAPI)  
+   - Example code snippets + review outputs  
+   - README / Documentation  
+
+2. Demo Walkthrough
+   - Loom video explaining:  
+     - How code is submitted  
+     - LLM analysis flow  
+     - Scoring rationale  
+
+---
+
+## 7. Tools / Tech Stack
+
+| Layer            | Technology                          |
+|-----------------|------------------------------------|
+| Frontend         | Next.js, React, Tailwind CSS       |
+| Backend          | Python, FastAPI                    |
+| LLM / AI         | OpenAI GPT-4 / LangChain / LangGraph |
+| Styling          | Tailwind CSS                       |
+| Deployment       | Vercel (Frontend), Any Python server / Render / Railway (Backend) |
+
+---
+
+## 8. Optional Enhancements
+
+- Syntax highlighting in code input / output  
+- Collapsible sections for long issue/suggestion lists  
+- Dark mode toggle  
+- User session history / previous code reviews  
+- Export review to PDF  
+
+---
+
+## 9. Testing & QA
+
+- Test with clean code → should give high score  
+- Test with intentionally flawed code → should detect issues  
+- Ensure score is consistent across runs  
+- Validate suggestions are practical & readable  
+- Remove debug logs before final submission  
+
+---
+
+## 10. Summary
+
+This project combines **AI reasoning with frontend UX and backend orchestration**.  
+The complexity lies in:
+- Designing structured prompts for LLM  
+- Consistent scoring & explanation  
+- Frontend visualization of review results  
+- Optional: session memory & advanced UX  
+
+Goal: Create a tool that **feels like a senior developer reviewing code**, not just running static checks.
+
+
+
