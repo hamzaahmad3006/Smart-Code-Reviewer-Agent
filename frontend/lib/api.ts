@@ -1,4 +1,4 @@
-import { ReviewResult, GenerationResult } from '@/type';
+import { ReviewResult, GenerationResult, ChatMessage, ChatResponse } from '@/type';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -48,6 +48,33 @@ export async function generateCode(prompt: string, language: string): Promise<Ge
     if (!response.ok) {
         const error = await response.json();
         throw new Error(error.detail || 'Failed to generate code');
+    }
+
+    return response.json();
+}
+
+export async function chatWithAI(
+    code: string,
+    reviewContext: string,
+    messages: ChatMessage[],
+    language: string
+): Promise<ChatResponse> {
+    const response = await fetch(`${API_URL}/api/chat`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            code,
+            review_context: reviewContext,
+            messages,
+            language
+        }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to get chat response');
     }
 
     return response.json();

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { AlertCircle, Lightbulb, Copy, Check } from 'lucide-react';
+import { AlertCircle, Lightbulb, Copy, Check, MessageSquare, Send, Bot, User } from 'lucide-react';
 import { clsx } from 'clsx';
-import { ReviewResult, ReviewOutputProps } from '@/type';
+import { ReviewResult, ReviewOutputProps, ChatMessage } from '@/type';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { chatWithAI } from '@/lib/api';
 
 export default function ReviewOutput({ result, codeToDisplay }: ReviewOutputProps) {
     const [copied, setCopied] = useState(false);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [inputValue, setInputValue] = useState('');
+    const [isSending, setIsSending] = useState(false);
 
     const getScoreColor = (score: number) => {
         if (score >= 9) return 'text-emerald-400 border-emerald-500/50 bg-emerald-500/10';
@@ -22,6 +26,36 @@ export default function ReviewOutput({ result, codeToDisplay }: ReviewOutputProp
         navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    };
+
+    const handleSendMessage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!inputValue.trim() || isSending) return;
+
+        const userMsg: ChatMessage = { role: 'user', content: inputValue };
+        setMessages(prev => [...prev, userMsg]);
+        setInputValue('');
+        setIsSending(true);
+
+        try {
+            const reviewContext = `Result Score: ${result.score}/10. Issues: ${result.issues.join(', ')}. Suggestions: ${result.suggestions.join(', ')}. Reasoning: ${result.reasoning}`;
+            const response = await chatWithAI(
+                codeToDisplay || "",
+                reviewContext,
+                [...messages, userMsg],
+                result.language
+            );
+
+            setMessages(prev => [...prev, { role: 'assistant', content: response.content }]);
+        } catch (error) {
+            console.error('Chat error:', error);
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: "Sorry, I encountered an error while processing your request. Please check your connection."
+            }]);
+        } finally {
+            setIsSending(false);
+        }
     };
 
     return (
@@ -133,6 +167,83 @@ export default function ReviewOutput({ result, codeToDisplay }: ReviewOutputProp
                     {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                     {copied ? (codeToDisplay ? 'Code Copied!' : 'Copied!') : (codeToDisplay ? 'Copy Code' : 'Copy review summary')}
                 </button>
+            </div>
+
+            {/* Chat Follow-up Section */}
+            <div className="mt-8 pt-8 border-t border-slate-800">
+                <div className="flex items-center gap-2 mb-6 text-slate-300">
+                    <MessageSquare className="w-5 h-5 text-primary-400" />
+                    <h3 className="text-lg font-semibold">Follow-up Questions</h3>
+                </div>
+
+                <div className="bg-slate-900/40 border border-slate-700/50 rounded-2xl overflow-hidden backdrop-blur-md">
+                    {/* Chat Messages */}
+                    <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                        {messages.length === 0 && (
+                            <div className="text-center py-8">
+                                <Bot className="w-12 h-12 text-slate-700 mx-auto mb-3" />
+                                <p className="text-slate-500 text-sm">Have any questions about this review or the code? Ask me anything!</p>
+                            </div>
+                        )}
+                        {messages.map((msg, idx) => (
+                            <div
+                                key={idx}
+                                className={clsx(
+                                    "flex gap-3 animate-in fade-in slide-in-from-top-1 duration-300",
+                                    msg.role === 'user' ? "flex-row-reverse" : "flex-row"
+                                )}
+                            >
+                                <div className={clsx(
+                                    "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
+                                    msg.role === 'user' ? "bg-primary-500/20 text-primary-400" : "bg-slate-800 text-slate-400"
+                                )}>
+                                    {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                                </div>
+                                <div className={clsx(
+                                    "max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed",
+                                    msg.role === 'user'
+                                        ? "bg-primary-600/20 text-primary-100 rounded-tr-none border border-primary-500/20"
+                                        : "bg-slate-800/50 text-slate-200 rounded-tl-none border border-slate-700/30"
+                                )}>
+                                    {msg.content}
+                                </div>
+                            </div>
+                        ))}
+                        {isSending && (
+                            <div className="flex gap-3">
+                                <div className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center">
+                                    <Bot className="w-4 h-4" />
+                                </div>
+                                <div className="bg-slate-800/50 text-slate-400 px-4 py-3 rounded-2xl rounded-tl-none border border-slate-700/30">
+                                    <div className="flex gap-1">
+                                        <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" />
+                                        <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce [animation-delay:0.2s]" />
+                                        <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce [animation-delay:0.4s]" />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Input Field */}
+                    <form onSubmit={handleSendMessage} className="p-4 bg-slate-900/60 border-t border-slate-800 flex gap-3">
+                        <input
+                            type="text"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            placeholder="Ask a follow-up question..."
+                            disabled={isSending}
+                            className="bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-hidden focus:border-primary-500/50 flex-grow transition-all"
+                        />
+                        <button
+                            type="submit"
+                            disabled={!inputValue.trim() || isSending}
+                            className="bg-primary-500 hover:bg-primary-600 disabled:bg-slate-700 disabled:opacity-50 text-white p-2 rounded-xl transition-all shadow-lg shadow-primary-500/20"
+                        >
+                            <Send className="w-5 h-5" />
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

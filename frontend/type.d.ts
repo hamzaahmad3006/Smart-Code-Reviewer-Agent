@@ -12,6 +12,15 @@ export interface GenerationResult {
     language: string;
 }
 
+export interface ChatMessage {
+    role: 'user' | 'assistant';
+    content: string;
+}
+
+export interface ChatResponse {
+    content: string;
+}
+
 export interface CodeInputProps {
     code: string;
     language: string;
