@@ -69,3 +69,23 @@ export const LANGUAGES = [
     { id: 'cpp', name: 'C++' },
     { id: 'php', name: 'PHP' },
 ];
+
+export interface User {
+    id: string;
+    username: string;
+    email: string;
+    full_name?: string;
+    avatar_url?: string;
+}
+
+export interface AuthState {
+    token: string | null;
+    isAuthenticated: boolean;
+    user: User | null;
+}
+
+export interface ProfileModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onUpdate: (user: User) => void;
+}

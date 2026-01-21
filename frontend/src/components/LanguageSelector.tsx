@@ -12,7 +12,7 @@ export default function LanguageSelector({ value, onChange, disabled }: Language
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 disabled={disabled}
-                className="appearance-none bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-all w-48"
+                className="appearance-none bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-all w-32 md:w-48"
             >
                 {languages.map((lang) => (
                     <option key={lang.id} value={lang.id}>

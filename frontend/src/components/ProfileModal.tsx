@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { X, Camera, Loader2, Save, User, UserCircle } from 'lucide-react';
+import { X, Camera, Loader2, Save, User as UserIcon, UserCircle } from 'lucide-react';
 import { getProfile, updateProfile, uploadToCloudinary } from '../lib/api';
-import { clsx } from 'clsx';
+import { User, ProfileModalProps } from '../type';
 
-interface ProfileModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onUpdate: (user: any) => void;
-}
+
 
 export default function ProfileModal({ isOpen, onClose, onUpdate }: ProfileModalProps) {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [fullName, setFullName] = useState('');
@@ -33,7 +29,7 @@ export default function ProfileModal({ isOpen, onClose, onUpdate }: ProfileModal
             setFullName(data.full_name || '');
             setUsername(data.username || '');
             setAvatarUrl(data.avatar_url || '');
-        } catch (err) {
+        } catch (err: unknown) {
             setError('Failed to load profile');
         } finally {
             setIsLoading(false);
@@ -49,7 +45,7 @@ export default function ProfileModal({ isOpen, onClose, onUpdate }: ProfileModal
         try {
             const url = await uploadToCloudinary(file);
             setAvatarUrl(url);
-        } catch (err) {
+        } catch (err: unknown) {
             setError('Failed to upload image');
         } finally {
             setUploading(false);
@@ -68,7 +64,7 @@ export default function ProfileModal({ isOpen, onClose, onUpdate }: ProfileModal
             });
             onUpdate(updated);
             onClose();
-        } catch (err) {
+        } catch (err: unknown) {
             setError('Failed to update profile');
         } finally {
             setIsSaving(false);
@@ -82,7 +78,7 @@ export default function ProfileModal({ isOpen, onClose, onUpdate }: ProfileModal
             <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
                 <div className="p-6 border-b border-slate-800 flex items-center justify-between">
                     <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                        <User className="text-primary-400" />
+                        <UserIcon className="text-primary-400" />
                         User Profile
                     </h2>
                     <button onClick={onClose} className="p-2 hover:bg-slate-800 rounded-full transition-colors text-slate-400 hover:text-white">

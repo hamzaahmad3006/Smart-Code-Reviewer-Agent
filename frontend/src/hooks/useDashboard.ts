@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getSessions, deleteSession } from '../lib/api';
+import { StoredReview } from '../type';
 
 export function useDashboard() {
-    const [sessions, setSessions] = useState<any[]>([]);
+    const [sessions, setSessions] = useState<StoredReview[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -34,7 +35,7 @@ export function useDashboard() {
             setSessions(prev => prev.filter(s => s.id !== id));
         } catch (error) {
             console.error('Failed to delete session:', error);
-            alert('Failed to delete session');
+            alert(error instanceof Error ? error.message : 'Failed to delete session');
         }
     };
 

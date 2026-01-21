@@ -37,17 +37,21 @@ export default function FileUpload({ onFileSelect, disabled }: FileUploadProps) 
     };
 
     const validateAndSelect = (file: File) => {
-        // Check size (1MB)
         if (file.size > 1024 * 1024) {
             alert("File size exceeds 1MB limit");
             return;
         }
 
-        // Check extension
         const validExtensions: Record<string, string> = {
             '.js': 'javascript',
             '.ts': 'typescript',
-            '.py': 'python'
+            '.py': 'python',
+            '.html': 'html',
+            '.css': 'css',
+            '.json': 'json',
+            '.c': 'c',
+            '.cpp': 'cpp',
+            '.php': 'php'
         };
         const ext = '.' + file.name.split('.').pop()?.toLowerCase();
         if (!(ext in validExtensions)) {
@@ -73,65 +77,44 @@ export default function FileUpload({ onFileSelect, disabled }: FileUploadProps) 
     };
 
     return (
-        <div className="w-full">
+        <div className="relative">
+            <input
+                ref={inputRef}
+                type="file"
+                className="hidden"
+                accept=".js,.ts,.py,.html,.css,.json,.c,.cpp,.php"
+                onChange={handleChange}
+                disabled={disabled}
+            />
+
             {!selectedFile ? (
-                <div
+                <button
+                    onClick={() => !disabled && inputRef.current?.click()}
+                    disabled={disabled}
                     className={clsx(
-                        "relative border-2 border-dashed rounded-xl p-8 transition-all text-center cursor-pointer",
-                        dragActive
-                            ? "border-primary-500 bg-primary-500/10"
-                            : "border-slate-700 hover:border-slate-500 hover:bg-slate-800/50",
-                        disabled && "opacity-50 cursor-not-allowed"
+                        "flex items-center gap-2 px-4 py-2 bg-slate-800 border border-slate-700 hover:border-primary-500/50 hover:bg-slate-700 text-slate-200 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed",
+                        dragActive && "border-primary-500 bg-primary-500/10"
                     )}
                     onDragEnter={handleDrag}
                     onDragLeave={handleDrag}
                     onDragOver={handleDrag}
                     onDrop={handleDrop}
-                    onClick={() => !disabled && inputRef.current?.click()}
+                    title="Upload File"
                 >
-                    <input
-                        ref={inputRef}
-                        type="file"
-                        className="hidden"
-                        accept=".js,.ts,.py"
-                        onChange={handleChange}
-                        disabled={disabled}
-                    />
-                    <div className="flex flex-col items-center gap-3">
-                        <div className="p-3 bg-slate-800 rounded-full text-primary-400">
-                            <Upload className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <p className="font-medium text-slate-200">
-                                Click to upload or drag and drop
-                            </p>
-                            <p className="text-sm text-slate-400 mt-1">
-                                JavaScript, TypeScript, Python (max 1MB)
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                    <Upload className="w-5 h-5 text-primary-400" />
+                    <span className="hidden md:inline font-medium text-sm">Upload File</span>
+                </button>
             ) : (
-                <div className="flex items-center justify-between p-4 bg-slate-800 border border-slate-700 rounded-xl relative overflow-hidden group">
-                    <div className="flex items-center gap-3 relative z-10">
-                        <div className="p-2 bg-primary-500/20 text-primary-400 rounded-lg">
-                            <FileCode className="w-5 h-5" />
-                        </div>
-                        <div>
-                            <p className="font-medium text-slate-200 text-sm">
-                                {selectedFile.name}
-                            </p>
-                            <p className="text-xs text-slate-400">
-                                {(selectedFile.size / 1024).toFixed(1)} KB
-                            </p>
-                        </div>
-                    </div>
+                <div className="flex items-center gap-2 px-3 py-2 bg-primary-500/10 border border-primary-500/30 rounded-lg animate-in fade-in zoom-in duration-200">
+                    <FileCode className="w-4 h-4 text-primary-400" />
+                    <span className="text-xs font-medium text-primary-300 max-w-[100px] truncate">
+                        {selectedFile.name}
+                    </span>
                     <button
                         onClick={clearFile}
-                        disabled={disabled}
-                        className="p-2 hover:bg-slate-700 rounded-full transition-colors text-slate-400 hover:text-white"
+                        className="p-1 hover:bg-primary-500/20 rounded-full transition-colors text-primary-400"
                     >
-                        <X className="w-4 h-4" />
+                        <X className="w-3 h-3" />
                     </button>
                 </div>
             )}

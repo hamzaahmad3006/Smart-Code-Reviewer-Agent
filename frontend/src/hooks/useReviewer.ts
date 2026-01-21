@@ -20,10 +20,8 @@ export function useReviewer() {
         setIsMounted(true);
     }, []);
 
-    // Protection logic
     useEffect(() => {
         if (isMounted && !isAuthenticated) {
-            // router.push('/auth/signin/signin');
         }
     }, [isAuthenticated, router, isMounted]);
 
@@ -34,8 +32,8 @@ export function useReviewer() {
         try {
             const reviewResult = await reviewCode(code, language);
             setResult(reviewResult);
-        } catch (err: any) {
-            setError(err.message || 'Failed to analyze code');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Failed to analyze code');
         } finally {
             setIsLoading(false);
         }

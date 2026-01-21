@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface AuthState {
-    token: string | null;
-    isAuthenticated: boolean;
-    user: any | null;
-}
+import { AuthState, User } from '../type';
 
 const initialState: AuthState = {
     token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
@@ -16,7 +11,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCredentials: (state: AuthState, action: PayloadAction<{ token: string; user?: any }>) => {
+        setCredentials: (state: AuthState, action: PayloadAction<{ token: string; user?: User }>) => {
             state.token = action.payload.token;
             state.isAuthenticated = true;
             if (action.payload.user) state.user = action.payload.user;

@@ -32,14 +32,12 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
     const [inputValue, setInputValue] = useState('');
     const [isSending, setIsSending] = useState(false);
 
-    // Sync messages if initialMessages changes (e.g. when navigating history)
     React.useEffect(() => {
         if (initialMessages) {
             setMessages(initialMessages);
         }
     }, [initialMessages]);
 
-    // Debug log to see what data we're getting
     React.useEffect(() => {
         console.log('ReviewOutput Result Data:', result);
         console.log('ReviewOutput Messages:', initialMessages);
@@ -94,8 +92,7 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Header & Score */}
-            {/* Header & Score */}
+
             <div className="flex items-start justify-between">
                 <div>
                     <h2 className="text-2xl font-bold bg-linear-to-r from-white to-slate-400 bg-clip-text text-transparent">
@@ -114,9 +111,8 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
                 </div>
             </div>
 
-            {/* Generated Code Preview (if applicable) */}
             {codeToDisplay && (
-                <div className="rounded-xl overflow-hidden border border-slate-700 bg-slate-900 shadow-2xl">
+                <div className="rounded-xl overflow-auto border border-slate-700 bg-slate-900 shadow-2xl max-h-[500px] scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                     <SyntaxHighlighter
                         language={result.language}
                         style={atomOneDark}
@@ -132,7 +128,6 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
                 </div>
             )}
 
-            {/* Reasoning / Explanation */}
             <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
                 <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">
                     {codeToDisplay ? 'How it works' : 'Analysis Summary'}
@@ -143,7 +138,6 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-                {/* Issues */}
                 <div className="space-y-4">
                     <h3 className="flex items-center gap-2 text-lg font-semibold text-red-400">
                         <AlertCircle className="w-5 h-5" />
@@ -200,7 +194,6 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
                 </button>
             </div>
 
-            {/* Chat Follow-up Section */}
             <div className="mt-8 pt-8 border-t border-slate-800">
                 <div className="flex items-center gap-2 mb-6 text-slate-300">
                     <MessageSquare className="w-5 h-5 text-primary-400" />
@@ -208,7 +201,6 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
                 </div>
 
                 <div className="bg-slate-900/40 border border-slate-700/50 rounded-2xl overflow-hidden backdrop-blur-md">
-                    {/* Chat Messages */}
                     <div className="p-6 space-y-4 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
                         {messages.length === 0 && (
                             <div className="text-center py-8">
@@ -256,7 +248,6 @@ export default function ReviewOutput({ result, codeToDisplay, codeContext, initi
                         )}
                     </div>
 
-                    {/* Input Field */}
                     <form onSubmit={handleSendMessage} className="p-4 bg-slate-900/60 border-t border-slate-800 flex gap-3">
                         <input
                             type="text"

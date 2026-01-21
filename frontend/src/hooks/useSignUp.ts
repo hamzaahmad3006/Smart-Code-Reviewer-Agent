@@ -22,8 +22,8 @@ export const useSignUp = () => {
             const data = await apiSignUp(username, email, password);
             dispatch(setCredentials({ token: data.access_token }));
             router.push('/');
-        } catch (err: any) {
-            setError(err.message || 'Failed to sign up');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Failed to sign up');
         } finally {
             setIsLoading(false);
         }

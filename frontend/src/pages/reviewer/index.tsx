@@ -28,20 +28,20 @@ export default function ReviewerPage() {
         <div className="min-h-screen bg-slate-950 text-slate-200 p-6">
             <div className="max-w-7xl mx-auto space-y-8">
                 {/* Header */}
-                <header className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link href="/" className="p-2 hover:bg-slate-900 rounded-full transition-colors">
-                            <ArrowLeft className="w-6 h-6" />
+                <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                        <Link href="/" className="p-2 hover:bg-slate-900 rounded-full transition-colors shrink-0">
+                            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                         </Link>
-                        <div>
-                            <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                                <Sparkles className="w-8 h-8 text-primary-400" />
-                                Code Analyzer
+                        <div className="min-w-0">
+                            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center gap-2 truncate">
+                                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-primary-400 shrink-0" />
+                                <span className="truncate text-white">Code Analyzer</span>
                             </h1>
-                            <p className="text-slate-400">Powered by Multi-Agent AI Workflow</p>
+                            <p className="text-slate-400 text-xs sm:text-sm truncate hidden x:block">Powered by Multi-Agent AI Workflow</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-end">
                         <LanguageSelector value={language} onChange={setLanguage} />
                         <FileUpload onFileSelect={(c: string, l: string) => { setCode(c); setLanguage(l); }} />
                         <UserAvatar />

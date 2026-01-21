@@ -30,7 +30,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex items-center gap-4">
                             <Link
-                                href="/"
+                                href="/reviewer"
                                 className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary-500/20 flex items-center gap-2"
                             >
                                 <Code className="w-5 h-5" />
@@ -48,7 +48,7 @@ export default function DashboardPage() {
                                 Start your first AI-powered code review to see your history here.
                             </p>
                             <Link
-                                href="/"
+                                href="/reviewer"
                                 className="text-primary-400 hover:text-primary-300 font-medium inline-flex items-center gap-2"
                             >
                                 Analyze your first code snippet <ArrowRight className="w-4 h-4" />

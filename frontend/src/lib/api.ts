@@ -1,4 +1,4 @@
-import { ReviewResult, GenerationResult, ChatMessage, ChatResponse } from '../type';
+import { ReviewResult, GenerationResult, ChatMessage, ChatResponse, StoredReview, User } from '../type';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -7,7 +7,7 @@ const getAuthHeader = (): Record<string, string> => {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
 
-export async function signIn(email: string, password: string) {
+export async function signIn(email: string, password: string): Promise<{ access_token: string }> {
     const response = await fetch(`${API_URL}/api/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -17,7 +17,7 @@ export async function signIn(email: string, password: string) {
     return response.json();
 }
 
-export async function signUp(username: string, email: string, password: string) {
+export async function signUp(username: string, email: string, password: string): Promise<{ access_token: string }> {
     const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -112,7 +112,7 @@ export async function chatWithAI(
     return response.json();
 }
 
-export async function getSessions() {
+export async function getSessions(): Promise<StoredReview[]> {
     const response = await fetch(`${API_URL}/api/sessions`, {
         headers: getAuthHeader()
     });
@@ -120,7 +120,7 @@ export async function getSessions() {
     return response.json();
 }
 
-export async function getSessionDetail(id: string) {
+export async function getSessionDetail(id: string): Promise<StoredReview> {
     const response = await fetch(`${API_URL}/api/sessions/${id}`, {
         headers: getAuthHeader()
     });
@@ -128,7 +128,7 @@ export async function getSessionDetail(id: string) {
     return response.json();
 }
 
-export async function deleteSession(id: string) {
+export async function deleteSession(id: string): Promise<{ message: string }> {
     const response = await fetch(`${API_URL}/api/sessions/${id}`, {
         method: 'DELETE',
         headers: getAuthHeader()
@@ -137,7 +137,7 @@ export async function deleteSession(id: string) {
     return response.json();
 }
 
-export async function getProfile() {
+export async function getProfile(): Promise<User> {
     const response = await fetch(`${API_URL}/api/users/me`, {
         headers: getAuthHeader()
     });
@@ -145,7 +145,7 @@ export async function getProfile() {
     return response.json();
 }
 
-export async function updateProfile(data: { full_name?: string; avatar_url?: string; username?: string }) {
+export async function updateProfile(data: { full_name?: string; avatar_url?: string; username?: string }): Promise<User> {
     const response = await fetch(`${API_URL}/api/users/me`, {
         method: 'PUT',
         headers: {
@@ -159,7 +159,6 @@ export async function updateProfile(data: { full_name?: string; avatar_url?: str
 }
 
 export async function uploadToCloudinary(file: File): Promise<string> {
-    // Step 1: Get signed parameters from backend
     const signResponse = await fetch(`${API_URL}/api/users/cloudinary/signature`, {
         headers: getAuthHeader()
     });
@@ -167,7 +166,7 @@ export async function uploadToCloudinary(file: File): Promise<string> {
     if (!signResponse.ok) throw new Error('Failed to get upload signature');
     const signData = await signResponse.json();
 
-    // Step 2: Upload to Cloudinary with signed parameters
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('api_key', signData.api_key);
