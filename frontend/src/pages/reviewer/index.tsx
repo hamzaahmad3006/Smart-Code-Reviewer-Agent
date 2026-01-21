@@ -4,7 +4,7 @@ import ReviewOutput from '../../components/ReviewOutput';
 import LanguageSelector from '../../components/LanguageSelector';
 import FileUpload from '../../components/FileUpload';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { useReviewer } from './useReviewer';
+import { useReviewer } from '../../hooks/useReviewer';
 import { ArrowLeft, Sparkles, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import UserAvatar from '../../components/UserAvatar';

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { getSessions } from '../../lib/api';
+import React from 'react';
+import { useDashboard } from '../../hooks/useDashboard';
 import { History, Code, Calendar, MessageSquare, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import UserAvatar from '../../components/UserAvatar';
@@ -7,28 +7,7 @@ import UserAvatar from '../../components/UserAvatar';
 import ProtectedRoute from '../../components/ProtectedRoute';
 
 export default function DashboardPage() {
-    const [sessions, setSessions] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (!isMounted) return;
-        const fetchSessions = async () => {
-            try {
-                const data = await getSessions();
-                setSessions(data);
-            } catch (error) {
-                console.error('Failed to fetch sessions:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchSessions();
-    }, [isMounted]);
+    const { sessions, isLoading, isMounted } = useDashboard();
 
     if (!isMounted) return null;
 

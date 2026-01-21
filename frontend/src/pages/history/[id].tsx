@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { useHistory } from './useHistory';
+import { useHistory } from '../../hooks/useHistory';
 import ReviewOutput from '../../components/ReviewOutput';
 import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
 

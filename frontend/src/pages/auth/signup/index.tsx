@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { useSignUp } from './useSignUp';
+import { useSignUp } from '../../../hooks/useSignUp';
 import { UserPlus, User, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function SignUpPage() {

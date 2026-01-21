@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { useSignIn } from './useSignIn';
+import { useSignIn } from '../../../hooks/useSignIn';
 import { LogIn, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function SignInPage() {
