@@ -65,4 +65,7 @@ export const LANGUAGES = [
     { id: 'json', name: 'JSON' },
     { id: 'html', name: 'HTML' },
     { id: 'css', name: 'CSS' },
+    { id: 'c', name: 'C' },
+    { id: 'cpp', name: 'C++' },
+    { id: 'php', name: 'PHP' },
 ];

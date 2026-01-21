@@ -4,10 +4,22 @@ import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript';
 import ts from 'react-syntax-highlighter/dist/cjs/languages/hljs/typescript';
 import py from 'react-syntax-highlighter/dist/cjs/languages/hljs/python';
+import html from 'react-syntax-highlighter/dist/cjs/languages/hljs/xml';
+import css from 'react-syntax-highlighter/dist/cjs/languages/hljs/css';
+import json from 'react-syntax-highlighter/dist/cjs/languages/hljs/json';
+import c from 'react-syntax-highlighter/dist/cjs/languages/hljs/c';
+import cpp from 'react-syntax-highlighter/dist/cjs/languages/hljs/cpp';
+import php from 'react-syntax-highlighter/dist/cjs/languages/hljs/php';
 
 SyntaxHighlighter.registerLanguage('javascript', js);
 SyntaxHighlighter.registerLanguage('typescript', ts);
 SyntaxHighlighter.registerLanguage('python', py);
+SyntaxHighlighter.registerLanguage('html', html);
+SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('json', json);
+SyntaxHighlighter.registerLanguage('c', c);
+SyntaxHighlighter.registerLanguage('cpp', cpp);
+SyntaxHighlighter.registerLanguage('php', php);
 
 import { CodeInputProps } from '../type';
 

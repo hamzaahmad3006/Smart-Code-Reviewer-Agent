@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDashboard } from '../../hooks/useDashboard';
-import { History, Code, Calendar, MessageSquare, ArrowRight, Loader2 } from 'lucide-react';
+import { History, Code, Calendar, MessageSquare, ArrowRight, Loader2, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import UserAvatar from '../../components/UserAvatar';
 
 import ProtectedRoute from '../../components/ProtectedRoute';
 
 export default function DashboardPage() {
-    const { sessions, isLoading, isMounted } = useDashboard();
+    const { sessions, isLoading, isMounted, handleDeleteSession } = useDashboard();
 
     if (!isMounted) return null;
 
@@ -57,33 +57,45 @@ export default function DashboardPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {sessions.map((session) => (
-                                <Link
-                                    key={session.id}
-                                    href={`/history/${session.id}`}
-                                    className="group bg-slate-900/40 border border-slate-800 rounded-2xl p-6 hover:border-primary-500/50 hover:bg-slate-800/40 transition-all backdrop-blur-md"
-                                >
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="bg-slate-950/50 p-3 rounded-xl border border-slate-700 group-hover:border-primary-500/30 transition-colors">
-                                            <Code className="w-6 h-6 text-primary-400" />
+                                <div key={session.id} className="relative group">
+                                    <Link
+                                        href={`/history/${session.id}`}
+                                        className="block h-full bg-slate-900/40 border border-slate-800 rounded-2xl p-6 hover:border-primary-500/50 hover:bg-slate-800/40 transition-all backdrop-blur-md"
+                                    >
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className="bg-slate-950/50 p-3 rounded-xl border border-slate-700 group-hover:border-primary-500/30 transition-colors">
+                                                <Code className="w-6 h-6 text-primary-400" />
+                                            </div>
+                                            <span className="text-xs font-mono uppercase px-2 py-1 bg-primary-500/10 text-primary-400 rounded-md border border-primary-500/20">
+                                                {session.language}
+                                            </span>
                                         </div>
-                                        <span className="text-xs font-mono uppercase px-2 py-1 bg-primary-500/10 text-primary-400 rounded-md border border-primary-500/20">
-                                            {session.language}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-primary-300 transition-colors line-clamp-1">
-                                        Review #{session.id.slice(-6)}
-                                    </h3>
-                                    <div className="space-y-3">
-                                        <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                            <Calendar className="w-4 h-4" />
-                                            {new Date(session.created_at).toLocaleDateString()}
+                                        <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-primary-300 transition-colors line-clamp-1">
+                                            Review #{session.id.slice(-6)}
+                                        </h3>
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
+                                                <Calendar className="w-4 h-4" />
+                                                {new Date(session.created_at).toLocaleDateString()}
+                                            </div>
+                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
+                                                <MessageSquare className="w-4 h-4" />
+                                                {session.message_count} follow-up messages
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                            <MessageSquare className="w-4 h-4" />
-                                            {session.message_count} follow-up messages
-                                        </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleDeleteSession(session.id);
+                                        }}
+                                        className="absolute bottom-4 right-4 p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                        title="Delete History"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
                             ))}
                         </div>
                     )}

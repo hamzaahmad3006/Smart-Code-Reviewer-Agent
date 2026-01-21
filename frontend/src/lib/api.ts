@@ -128,6 +128,15 @@ export async function getSessionDetail(id: string) {
     return response.json();
 }
 
+export async function deleteSession(id: string) {
+    const response = await fetch(`${API_URL}/api/sessions/${id}`, {
+        method: 'DELETE',
+        headers: getAuthHeader()
+    });
+    if (!response.ok) throw new Error('Failed to delete session');
+    return response.json();
+}
+
 export async function getProfile() {
     const response = await fetch(`${API_URL}/api/users/me`, {
         headers: getAuthHeader()
