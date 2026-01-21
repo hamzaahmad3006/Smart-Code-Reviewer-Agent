@@ -92,8 +92,9 @@ export default function Home() {
             </main>
 
             <footer className="border-t border-slate-900 py-8 text-center text-slate-500">
-                <p>&copy; 2026 Smart Code Reviewer. Built with Next.js, LangGraph & MongoDB.</p>
+                <p>&copy; 2026 Smart Code Reviewer. Built with Next.js, LangGraph & MongoDB. v2</p>
             </footer>
         </div>
     );
 }
+// Triggering fresh Vercel build after hook movement
