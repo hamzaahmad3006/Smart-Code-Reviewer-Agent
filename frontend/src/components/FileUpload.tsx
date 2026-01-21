@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Upload, X, FileCode } from 'lucide-react';
 import { clsx } from 'clsx';
 
-import { FileUploadProps } from '@/type';
+import { FileUploadProps } from '../type';
 
 export default function FileUpload({ onFileSelect, disabled }: FileUploadProps) {
     const [dragActive, setDragActive] = useState(false);
@@ -44,15 +44,25 @@ export default function FileUpload({ onFileSelect, disabled }: FileUploadProps) 
         }
 
         // Check extension
-        const validExtensions = ['.js', '.ts', '.py'];
+        const validExtensions: Record<string, string> = {
+            '.js': 'javascript',
+            '.ts': 'typescript',
+            '.py': 'python'
+        };
         const ext = '.' + file.name.split('.').pop()?.toLowerCase();
-        if (!validExtensions.includes(ext)) {
-            alert(`Invalid file type. Allowed: ${validExtensions.join(', ')}`);
+        if (!(ext in validExtensions)) {
+            alert(`Invalid file type. Allowed: ${Object.keys(validExtensions).join(', ')}`);
             return;
         }
 
         setSelectedFile(file);
-        onFileSelect(file);
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target?.result as string;
+            onFileSelect(content, validExtensions[ext]);
+        };
+        reader.readAsText(file);
     };
 
     const clearFile = () => {

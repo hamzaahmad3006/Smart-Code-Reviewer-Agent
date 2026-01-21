@@ -17,7 +17,7 @@
   --color-slate-900: #0f172a;
   --color-slate-950: #020617;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Raleway", sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
@@ -28,7 +28,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
+    --background: #020617;
     --foreground: #f8fafc;
   }
 }
@@ -37,6 +37,16 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
 }
 
 @utility text-balance {

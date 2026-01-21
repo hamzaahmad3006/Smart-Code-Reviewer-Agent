@@ -1,13 +1,9 @@
 import React from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 
-import { LanguageSelectorProps } from '@/type';
+import { LanguageSelectorProps, LANGUAGES } from '../type';
 
-const languages = [
-    { id: 'javascript', name: 'JavaScript' },
-    { id: 'typescript', name: 'TypeScript' },
-    { id: 'python', name: 'Python' },
-];
+const languages = LANGUAGES;
 
 export default function LanguageSelector({ value, onChange, disabled }: LanguageSelectorProps) {
     return (

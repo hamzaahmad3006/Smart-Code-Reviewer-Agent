@@ -4,6 +4,7 @@ export interface ReviewResult {
     suggestions: string[];
     reasoning: string;
     language: string;
+    session_id?: string;
 }
 
 export interface GenerationResult {
@@ -22,7 +23,7 @@ export interface ChatResponse {
 }
 
 export interface CodeInputProps {
-    code: string;
+    value: string;
     language: string;
     onChange: (value: string) => void;
     disabled?: boolean;
@@ -42,6 +43,8 @@ export interface StoredReview extends ReviewResult {
 export interface ReviewOutputProps {
     result: ReviewResult;
     codeToDisplay?: string;
+    codeContext?: string; // Code passed to chat API without displaying
+    initialMessages?: ChatMessage[];
 }
 
 export interface LanguageSelectorProps {
@@ -51,6 +54,15 @@ export interface LanguageSelectorProps {
 }
 
 export interface FileUploadProps {
-    onFileSelect: (file: File) => void;
+    onFileSelect: (code: string, language: string) => void;
     disabled?: boolean;
 }
+
+export const LANGUAGES = [
+    { id: 'javascript', name: 'JavaScript' },
+    { id: 'typescript', name: 'TypeScript' },
+    { id: 'python', name: 'Python' },
+    { id: 'json', name: 'JSON' },
+    { id: 'html', name: 'HTML' },
+    { id: 'css', name: 'CSS' },
+];

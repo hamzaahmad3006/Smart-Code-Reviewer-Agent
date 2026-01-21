@@ -1,21 +1,21 @@
 import React from 'react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
-import ts from 'react-syntax-highlighter/dist/esm/languages/hljs/typescript';
-import py from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
+import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript';
+import ts from 'react-syntax-highlighter/dist/cjs/languages/hljs/typescript';
+import py from 'react-syntax-highlighter/dist/cjs/languages/hljs/python';
 
 SyntaxHighlighter.registerLanguage('javascript', js);
 SyntaxHighlighter.registerLanguage('typescript', ts);
 SyntaxHighlighter.registerLanguage('python', py);
 
-import { CodeInputProps } from '@/type';
+import { CodeInputProps } from '../type';
 
-export default function CodeInput({ code, language, onChange, disabled, placeholder }: CodeInputProps) {
+export default function CodeInput({ value, language, onChange, disabled, placeholder }: CodeInputProps) {
     return (
         <div className="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-900 group focus-within:ring-2 focus-within:ring-primary-500/50 focus-within:border-primary-500 transition-all">
             <textarea
-                value={code}
+                value={value}
                 onChange={(e) => onChange(e.target.value)}
                 disabled={disabled}
                 placeholder={placeholder || "Paste your code here..."}
@@ -76,7 +76,7 @@ export default function CodeInput({ code, language, onChange, disabled, placehol
                         }
                     }}
                 >
-                    {code || ' '}
+                    {value || ' '}
                 </SyntaxHighlighter>
             </div>
         </div>
