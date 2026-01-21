@@ -35,9 +35,12 @@ export interface SessionHistoryProps {
     currentReview: ReviewResult | null;
 }
 
-export interface StoredReview extends ReviewResult {
+export interface StoredReview extends Partial<ReviewResult> {
     id: string;
-    timestamp: number;
+    created_at: string;
+    message_count: number;
+    code?: string;
+    review_context?: string;
 }
 
 export interface ReviewOutputProps {
