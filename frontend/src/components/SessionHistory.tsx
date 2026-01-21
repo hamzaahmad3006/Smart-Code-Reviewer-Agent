@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { History, Clock, Trash2, ArrowRight } from 'lucide-react';
-import { ReviewResult, SessionHistoryProps, StoredReview } from '@/type';
+import { ReviewResult, SessionHistoryProps, StoredReview } from '../type';
 
 export default function SessionHistory({ onSelectReview, currentReview }: SessionHistoryProps) {
     const [history, setHistory] = useState<StoredReview[]>([]);
