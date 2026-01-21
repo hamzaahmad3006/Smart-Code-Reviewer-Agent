@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { reviewCode } from '../../lib/api';
-import { ReviewResult } from '../../type';
+import { reviewCode } from '../lib/api';
+import { ReviewResult } from '../type';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { RootState } from '../redux/store';
 import { useRouter } from 'next/navigation';
 
 export function useReviewer() {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getSessionDetail } from '../../lib/api';
+import { getSessionDetail } from '../lib/api';
 
 export function useHistory() {
     const router = useRouter();

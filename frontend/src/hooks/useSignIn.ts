@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../../redux/authSlice';
-import { signIn as apiSignIn } from '../../../lib/api';
+import { setCredentials } from '../redux/authSlice';
+import { signIn as apiSignIn } from '../lib/api';
 
 export const useSignIn = () => {
     const [email, setEmail] = useState('');

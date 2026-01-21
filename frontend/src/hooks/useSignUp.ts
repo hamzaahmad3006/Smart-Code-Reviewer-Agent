@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../../redux/authSlice';
-import { signUp as apiSignUp } from '../../../lib/api';
+import { setCredentials } from '../redux/authSlice';
+import { signUp as apiSignUp } from '../lib/api';
 
 export const useSignUp = () => {
     const [username, setUsername] = useState('');
